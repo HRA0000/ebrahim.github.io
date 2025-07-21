@@ -1,6 +1,6 @@
 import './App.css';
 import Home from './Home';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function App() {
   const [lang, setLang] = useState<'en' | 'ar'>('en');

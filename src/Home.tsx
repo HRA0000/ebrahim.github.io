@@ -100,7 +100,7 @@ const Home: React.FC<HomeProps> = ({ lang = 'en' }) => {
   return (
     <div dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <div className="profile-pic-container slide-fade-in" ref={profilePicRef}>
-        <img src="/profile%20pic.jpg" alt={t.name} className="profile-pic" />
+        <img src="/profile-pic.jpg" alt={t.name} className="profile-pic" />
       </div>
       <header className="header fade-in" id="home" ref={homeRef}>
         <h1 className="name">{t.name}</h1>
