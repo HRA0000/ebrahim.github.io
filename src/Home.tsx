@@ -127,7 +127,7 @@ const Home: React.FC<HomeProps> = ({ lang = 'en', profilePicRef }) => {
   };
 
   return (
-    <div dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <div>
       <div className="profile-pic-container slide-fade-in" ref={profilePicRefDiv}>
         <img src={`${import.meta.env.BASE_URL}profile-pic.jpg`} alt={t.name} className="profile-pic" />
       </div>
@@ -196,10 +196,14 @@ const Home: React.FC<HomeProps> = ({ lang = 'en', profilePicRef }) => {
         {error && <p className="error-message">{error}</p>}
         <ul className="contact-list">
           <li>{t.email}: <a href="mailto:ebrahemaltbeb@gmail.com">ebrahemaltbeb@gmail.com</a></li>
-          {window.innerWidth < 800 ? (
-            <li>{t.phone}: <a href="tel:+218914540082">+218 914540082</a></li>
+          {lang === 'en' ? (
+            window.innerWidth < 800 ? (
+              <li>{t.phone}: <a href="tel:+218914540082">+218 914540082</a></li>
+            ) : (
+              <li>{t.phone}: +218 914540082</li>
+            )
           ) : (
-            <li>{t.phone}: +218 914540082</li>
+            <li>{t.phone}: <span dir="ltr">+218 914540082</span></li>
           )}
           <li>{t.location}: {t.tripoli}</li>
         </ul>
