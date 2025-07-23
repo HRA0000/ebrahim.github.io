@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import emailjs from 'emailjs-com';
+import { FaUsers, FaLightbulb, FaHtml5, FaPython, FaMobileAlt, FaHeadphones, FaMusic, FaSlidersH, FaLinkedin, FaFacebook, FaInstagram, FaSoundcloud } from 'react-icons/fa';
 
 const SERVICE_ID = 'service_gaa2g34'; // Your provided Service ID
 const TEMPLATE_ID = 'template_7r1akcf'; // <-- Replace with your actual Template ID
@@ -7,6 +8,7 @@ const USER_ID = 'EqkZlke0AIT3ktEUE'; // <-- Replace with your actual User ID (pu
 
 interface HomeProps {
   lang?: 'en' | 'ar';
+  profilePicRef?: React.RefObject<HTMLDivElement>;
 }
 
 const translations = {
@@ -14,11 +16,12 @@ const translations = {
     name: 'Ebrahim Altabib',
     role: 'Web Designer & Developer',
     intro1: 'Welcome to my portfolio!',
-    intro2: 'I design and develop websites, mobile apps, and produce audio.',
-    intro3: 'Explore my work and feel free to contact me.',
+    intro2: 'I design and develop websites, mobile apps, and produce audio',
+    intro3: 'Explore my work and feel free to contact me',
     projects: 'My Projects',
-    project1: 'A creative project showcasing my skills in web and mobile development.',
-    project2: 'Another innovative project, demonstrating advanced design and development techniques.',
+    project1: 'Guesso: An online guessing game website where users can play and challenge friends',
+    project2: 'Another innovative project, demonstrating advanced design and development techniques',
+    project3: 'Electricity Meter Mobile App: A modern app for monitoring and managing electricity meters, designed and developed by me',
     contact: 'Contact Me',
     yourName: 'Your Name',
     yourEmail: 'Your Email',
@@ -27,19 +30,32 @@ const translations = {
     sent: 'Message sent successfully!',
     error: 'Failed to send message. Please try again.',
     email: 'Email',
-    phone: 'Phone',
     location: 'Location',
     tripoli: 'Tripoli, Libya',
+    skills: 'Skills',
+    softSkills: 'Soft Skills',
+    techSkills: 'Programming Languages & Technologies',
+    teamwork: 'Teamwork',
+    creativity: 'Creative Ideas',
+    htmlcss: 'HTML & CSS',
+    python: 'Learning Python',
+    flutter: 'Learning Flutter',
+    audioEng: 'Audio Engineering (FL Studio)',
+    musicProd: 'Music Production',
+    mixing: 'Mixing',
+    englishFluent: 'English Fluent',
+    phone: 'Phone',
   },
   ar: {
-    name: 'إبراهيم الطيبب',
+    name: 'أبراهيم الطبيب',
     role: 'مصمم ومطور مواقع وبرامج موبايل',
     intro1: 'مرحباً بك في موقعي الشخصي!',
-    intro2: 'أصمم وأطور مواقع إلكترونية وتطبيقات موبايل وأنتج الصوتيات.',
-    intro3: 'تصفح أعمالي ولا تتردد في التواصل معي.',
+    intro2: 'أصمم وأطور مواقع إلكترونية وتطبيقات موبايل ومهندس صوتيات',
+    intro3: 'تصفح أعمالي ولا تتردد في التواصل معي',
     projects: 'مشاريعي',
-    project1: 'مشروع إبداعي يبرز مهاراتي في تطوير الويب والموبايل.',
-    project2: 'مشروع آخر مبتكر يوضح تقنيات التصميم والتطوير المتقدمة.',
+    project1: 'جيسو: موقع لعبة تخمين عبر الإنترنت يمكن للمستخدمين فيه اللعب وتحدي الأصدقاء',
+    project2: 'مشروع آخر مبتكر يوضح تقنيات التصميم والتطوير المتقدمة',
+    project3: 'تطبيق عدادات الكهرباء: تطبيق حديث لمراقبة وإدارة عدادات الكهرباء من تصميمي وتطويري',
     contact: 'تواصل معي',
     yourName: 'اسمك',
     yourEmail: 'بريدك الإلكتروني',
@@ -48,21 +64,34 @@ const translations = {
     sent: 'تم إرسال الرسالة بنجاح!',
     error: 'فشل في إرسال الرسالة. حاول مرة أخرى.',
     email: 'البريد الإلكتروني',
-    phone: 'الهاتف',
     location: 'الموقع',
     tripoli: 'طرابلس، ليبيا',
+    skills: 'المهارات',
+    softSkills: 'المهارات الشخصية',
+    techSkills: 'لغات وتقنيات البرمجة',
+    teamwork: 'العمل الجماعي',
+    creativity: 'أفكار إبداعية',
+    htmlcss: 'HTML و CSS',
+    python: 'تعلم بايثون',
+    flutter: 'تعلم فلاتر',
+    audioEng: 'هندسة صوتية (FL Studio)',
+    musicProd: 'إنتاج موسيقي',
+    mixing: 'مكساج',
+    englishFluent: 'إجادة اللغة الإنجليزية',
+    phone: 'الهاتف',
   }
 };
 
-const Home: React.FC<HomeProps> = ({ lang = 'en' }) => {
+const Home: React.FC<HomeProps> = ({ lang = 'en', profilePicRef }) => {
   const t = translations[lang];
   const homeRef = useRef<HTMLElement>(null);
   const projectsRef = useRef<HTMLElement>(null);
   const contactRef = useRef<HTMLElement>(null);
-  const profilePicRef = useRef<HTMLImageElement>(null);
+  const profilePicRefDiv = useRef<HTMLDivElement>(null);
+  const skillsRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const sections = [homeRef.current, projectsRef.current, contactRef.current, profilePicRef.current];
+    const sections = [homeRef.current, projectsRef.current, contactRef.current, profilePicRefDiv.current, skillsRef.current];
     const observer = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -99,8 +128,8 @@ const Home: React.FC<HomeProps> = ({ lang = 'en' }) => {
 
   return (
     <div dir={lang === 'ar' ? 'rtl' : 'ltr'}>
-      <div className="profile-pic-container slide-fade-in" ref={profilePicRef}>
-        <img src="/profile-pic.jpg" alt={t.name} className="profile-pic" />
+      <div className="profile-pic-container slide-fade-in" ref={profilePicRefDiv}>
+        <img src={`${import.meta.env.BASE_URL}profile-pic.jpg`} alt={t.name} className="profile-pic" />
       </div>
       <header className="header fade-in" id="home" ref={homeRef}>
         <h1 className="name">{t.name}</h1>
@@ -117,14 +146,41 @@ const Home: React.FC<HomeProps> = ({ lang = 'en' }) => {
         <h2>{t.projects}</h2>
         <div className="project-gallery">
           <div className="project-item">
-            <img src="/guesso.png" alt="Project Guesso" className="project-image" />
+            <div className="guesso-images">
+              <img src={`${import.meta.env.BASE_URL}guesso.png`} alt="Guesso 1" className="project-image" />
+              <img src={`${import.meta.env.BASE_URL}guesso2.png`} alt="Guesso 2" className="project-image" />
+            </div>
             <h3>Guesso</h3>
             <p>{t.project1}</p>
           </div>
           <div className="project-item">
-            <img src="/guesso2.png" alt="Project Guesso 2" className="project-image" />
-            <h3>Guesso 2</h3>
-            <p>{t.project2}</p>
+            <img src={`${import.meta.env.BASE_URL}My_Meter.png`} alt="Electricity Meter App" className="project-image" />
+            <h3>Electricity Meter App</h3>
+            <p>{t.project3}</p>
+          </div>
+        </div>
+      </section>
+      <section className="skills-section fade-in" id="skills" ref={skillsRef}>
+        <h2>{t.skills}</h2>
+        <div className="skills-lists">
+          <div className="skills-list">
+            <h3>{t.softSkills}</h3>
+            <ul>
+              <li><FaUsers style={{ marginRight: 8 }} />{t.teamwork}</li>
+              <li><FaLightbulb style={{ marginRight: 8 }} />{t.creativity}</li>
+              <li><FaUsers style={{ marginRight: 8 }} />{t.englishFluent}</li>
+            </ul>
+          </div>
+          <div className="skills-list">
+            <h3>{t.techSkills}</h3>
+            <ul>
+              <li><FaHtml5 style={{ marginRight: 8 }} />{t.htmlcss}</li>
+              <li><FaPython style={{ marginRight: 8 }} />{t.python}</li>
+              <li><FaMobileAlt style={{ marginRight: 8 }} />{t.flutter}</li>
+              <li><FaHeadphones style={{ marginRight: 8 }} />{t.audioEng}</li>
+              <li><FaMusic style={{ marginRight: 8 }} />{t.musicProd}</li>
+              <li><FaSlidersH style={{ marginRight: 8 }} />{t.mixing}</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -140,10 +196,23 @@ const Home: React.FC<HomeProps> = ({ lang = 'en' }) => {
         {error && <p className="error-message">{error}</p>}
         <ul className="contact-list">
           <li>{t.email}: <a href="mailto:ebrahemaltbeb@gmail.com">ebrahemaltbeb@gmail.com</a></li>
-          <li>{t.phone}: <a href="tel:0914540082">0914540082</a></li>
+          {window.innerWidth < 800 ? (
+            <li>{t.phone}: <a href="tel:+218914540082">+218 914540082</a></li>
+          ) : (
+            <li>{t.phone}: +218 914540082</li>
+          )}
           <li>{t.location}: {t.tripoli}</li>
         </ul>
       </section>
+      <footer className="footer">
+        <div className="footer-socials">
+          <a href="https://linkedin.com/in/ebrahim-altbeb-a4b7b0230" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedin /></a>
+          <a href="https://www.facebook.com/Hemoxmusic" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebook /></a>
+          <a href="https://www.instagram.com/hraa.wav/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
+          <a href="https://soundcloud.com/hemoxmusic" target="_blank" rel="noopener noreferrer" aria-label="SoundCloud"><FaSoundcloud /></a>
+        </div>
+        <div className="footer-copy">&copy; 2025 Ebrahim Altabib All rights reserved.</div>
+      </footer>
     </div>
   );
 };
