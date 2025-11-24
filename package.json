@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy:docs": "npm run build && powershell -Command \"if (Test-Path docs) { Remove-Item -Recurse -Force docs }; Copy-Item -Recurse dist docs\" && git add docs && git commit -m \"Deploy to docs\" && git push"
   },
   "dependencies": {
     "emailjs-com": "^3.2.0",
